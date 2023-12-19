@@ -19,20 +19,75 @@ private:
 
 void createRectangle(Point& originVortex, double edgeLength, double angle = 0)
 {
-	Line ab = Line(originVortex, 0);
+	double incline = 0;
+	bool isVertical = false;
+	std::cout << originVortex.toString() << std::endl;
+	if (int(angle) % 180 == 90)
+	{
+		isVertical = true;
+	}
+	else 
+	{
+		incline = std::tan(angle);
+	}
+	Line ab = Line();
+	if (!isVertical)
+	{
+		ab = Line(originVortex, incline);
+	}
+	else
+	{
+		ab = Line(originVortex);
+	}
+	std::cout << ab.toString() << std::endl;
 
-	Point b = Point();
+	Line ad = ab.getPerpendicular(originVortex);
+	std::cout << ad.toString() << std::endl;
+
+	Point b = ab.findPoint(originVortex, edgeLength);
+	std::cout << b.toString() << std::endl;
+
+	Point d = ad.findPoint(originVortex, edgeLength);
+	std::cout << d.toString() << std::endl;
+
+	Line ac = ad.getPerpendicular(d);
+	std::cout << ac.toString() << std::endl;
+
+	Line bc = ab.getPerpendicular(b);
+	std::cout << bc.toString() << std::endl;
+
+	Point c = bc.findPoint(b, edgeLength);
+	std::cout << c.toString() << std::endl;
+
+	double x = originVortex.getX() + b.getX() + c.getX() + d.getX();
+	double y = originVortex.getY() + b.getY() + c.getY() + d.getY();
+	Point mid = Point(x/4,y/4);
+	std::cout << mid.toString() << std::endl;
+
+	double dst = ab.distance(mid);
+	std::cout << dst << std::endl;
+	dst = bc.distance(mid);
+	std::cout << dst << std::endl;
+	dst = ac.distance(mid);
+	std::cout << dst << std::endl;
+
+	dst = mid.distance(originVortex);
+	std::cout << dst << std::endl;
+	dst = mid.distance(b);
+	std::cout << dst << std::endl;
+	dst = mid.distance(c);
+	std::cout << dst << std::endl;
 }
 
 int main()
 {
-	Point a = Point(4, 3);
-	Point b = Point(6, 2);
-	Line ab = Line(a, b);
-	Line bc = Line(2, -10);
-	Line ad = Line(-0.5, +5);
-	Point c = bc.findPoint(b,b.distance(a));
-	Point d = bc.findPoint(b,b.distance(a), false);
-	std::cout << ad.getPointByX(ad.intersaction(bc)).toString() << std::endl;
+	try {
+		Point a = Point(1, 1);
+		createRectangle(a, 5,30);
+	}
+	catch (const char* ex )
+	{
+		std::cout << ex;
+	}
 	return 0;
 }
