@@ -7,8 +7,8 @@ class Line
 public:
 	Line();
 	Line(const Point& a, const Point& b);
+	Line(const Point& a);
 	Line(const double m, const double b, const bool isVertical = false);
-	Line(const double b);
 	Line(const Point& a, const double m);
 	Line(const Line& line);
 	double getM() const;
@@ -22,6 +22,8 @@ public:
 	const double isIntersacting(const Point& p) const;
 	const bool isIntersacting(const Line& line) const;
 	const double intersaction(const Line& line) const;
+	const Line getPerpendicular() const;
+	const Line getPerpendicular(const Point& p) const;
 	Point findPoint(const Point& p, const double distance, const bool first = true) const;
 	std::string toString() const;
 private:

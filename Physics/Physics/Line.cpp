@@ -23,6 +23,11 @@ Line::Line(const Point& a, const Point& b)
 		
 }
 
+Line::Line(const Point& a)
+	:Line(0,a.getX(),true)
+{
+}
+
 Line::Line(const double m, const double b, const bool isVertical)
 {
 	this->setB(b);
@@ -30,15 +35,9 @@ Line::Line(const double m, const double b, const bool isVertical)
 	this->isVertical = isVertical;
 }
 
-Line::Line(const double b)
-	:Line(0,b,true)
-{
-}
-
 Line::Line(const Point& a, const double m)
+	:Line(m, a.getY() - m * a.getX())
 {
-	this->setM(m);
-	this->setB(a.getY()-m*a.getX());
 }
 
 Line::Line(const Line& line)
@@ -154,29 +153,87 @@ const double Line::intersaction(const Line& line) const
 	}
 }
 
-Point Line::findPoint(const Point& p, const double distance, const bool first) const
+const Line Line::getPerpendicular() const
 {
-	double freeNumbers = pow(p.getX(),2) + pow(p.getY(),2) - 2*p.getY()*this->getB() + pow(this->getB(), 2) - pow(distance, 2);
-	double firsDegree = -2 * p.getX() - 2 * p.getY() * this->getM() + 2*this->getM()*this->getB();
-	double secondDegree = 1 + pow(this->getM(), 2);
+	return this->getPerpendicular(Point(0,0));
+}
 
-	double discriminant = pow(firsDegree,2) - 4 * secondDegree * freeNumbers;
-	double x = (-1 * firsDegree);
-	discriminant = sqrt(discriminant);
-	if (first)
+const Line Line::getPerpendicular(const Point& p) const
+{
+	double incline = 0;
+	double b = 0;
+	if (this->getIsVertical())
 	{
-		x += discriminant;
+		return Line(0, p.getY());
+	}
+	else if (this->getM() == 0)
+	{
+		return Line(p);
 	}
 	else
 	{
-		x -= discriminant;
+		incline = -1 / this->getM();
+		b = p.getY() - incline * p.getX();
+		return Line(incline, b);
 	}
-	x /= 2 * secondDegree;
-	
-	return this->getPointByX(x);
+}
+
+Point Line::findPoint(const Point& p, const double distance, const bool first) const
+{
+	double freeNumbers = 0;
+	double firsDegree = 0;
+	double secondDegree = 0;
+
+	double discriminant = 0;
+	double x = 0;
+	double y = 0;
+
+	if (this->isIntersacting(p))
+	{
+		throw("Point is not on the line");
+	}
+
+	if (!this->getIsVertical())
+	{
+		freeNumbers = pow(p.getX(), 2) + pow(p.getY(), 2) - 2 * p.getY() * this->getB() + pow(this->getB(), 2) - pow(distance, 2);
+		firsDegree = -2 * p.getX() - 2 * p.getY() * this->getM() + 2 * this->getM() * this->getB();
+		secondDegree = 1 + pow(this->getM(), 2);
+
+		discriminant = pow(firsDegree, 2) - 4 * secondDegree * freeNumbers;
+		discriminant = sqrt(discriminant);
+
+		x = (-1 * firsDegree);
+
+		if (first)
+		{
+			x += discriminant;
+		}
+		else
+		{
+			x -= discriminant;
+		}
+
+		x /= 2 * secondDegree;
+		return this->getPointByX(x);
+	}
+	else
+	{
+		y = p.getY();
+
+		if (first)
+		{
+			y += distance;
+		}
+		else
+		{
+			y -= distance;
+		}
+
+		return this->getPointByY(y);
+	}
 }
 
 std::string Line::toString() const
 {
-	return this->getIsVertical()?"X=":"Y=" + (this->getM()==1? "" : std::to_string(this->getM())) + "X" + (this->getB() > 0 ? "+" : "") + (this->getB() ? std::to_string(this->getB()) : "");
+	return this->getIsVertical() ? "X=" + std::to_string(this->getB()) : "Y=" + (this->getM()==1 || this->getM() == 0? "" : std::to_string(this->getM())) + (this->getM() == 0?"":"X") + (this->getB() > 0 ? (this->getM()?"+":"") : "") + (this->getB() ? std::to_string(this->getB()) : (this->getM() == 0 ? "0" : ""));
 }
