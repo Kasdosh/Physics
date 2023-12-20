@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Line.h"
-
+#include <chrono> 
 #define PI 3.14159
 
+using namespace std::chrono;
 using namespace std;
 
 class Shape
@@ -81,9 +82,17 @@ void createRectangle(Point& originVortex, double edgeLength, double angle = 0)
 
 int main()
 {
-	try {
+	try 
+	{
 		Point a = Point(1, 1);
+		auto start = high_resolution_clock::now();
+		createRectangle(a, 5,15);
 		createRectangle(a, 5,30);
+		createRectangle(a, 5,45);
+		createRectangle(a, 5,60);
+		auto stop = high_resolution_clock::now();
+		auto duration = duration_cast<microseconds>(stop - start);
+		cout << duration.count() << endl;
 	}
 	catch (const char* ex )
 	{
