@@ -19,7 +19,7 @@ public:
 	double distance(const Point& p) const;
 	const Point getPointByX(const double x) const;
 	const Point getPointByY(const double y) const;
-	const double isIntersacting(const Point& p) const;
+	const bool isIntersacting(const Point& p) const;
 	const bool isIntersacting(const Line& line) const;
 	const double intersaction(const Line& line) const;
 	const Line getPerpendicular() const;

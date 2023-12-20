@@ -104,17 +104,16 @@ const Point Line::getPointByY(const double y) const
 	return Point((y-this->getB())/this->getM(),y);
 }
 
-const double Line::isIntersacting(const Point& p) const
+const bool Line::isIntersacting(const Point& p) const
 {
 	double y = 0;
-
 	if (this->getIsVertical())
 	{
 		return p.getX() - this->getB();
 	}
 
 	y = p.getX() * this->getM() + this->getB();
-	return p.getY() - y;
+	return p.getY() / y ? true : false;
 }
 
 const bool Line::isIntersacting(const Line& line) const
@@ -188,7 +187,7 @@ Point Line::findPoint(const Point& p, const double distance, const bool first) c
 	double x = 0;
 	double y = 0;
 
-	if (this->isIntersacting(p))
+	if (!this->isIntersacting(p))
 	{
 		throw("Point is not on the line");
 	}
