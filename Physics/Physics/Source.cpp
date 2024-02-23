@@ -1,29 +1,16 @@
 #include <iostream>
 #include "Line.h"
 #include <chrono> 
-#define PI 3.14159
 
 using namespace std::chrono;
 using namespace std;
-
-class Shape
-{
-private:
-	
-};
-
-class body
-{
-private:
-	
-};
 
 void createRectangle(Point& originVortex, double edgeLength, double angle = 0)
 {
 	double incline = 0;
 	bool isVertical = false;
 	std::cout << originVortex.toString() << std::endl;
-	if (int(angle) % 180 == 90)
+	if (int(angle) % 180 == 90 || angle == 0)
 	{
 		isVertical = true;
 	}
@@ -80,23 +67,79 @@ void createRectangle(Point& originVortex, double edgeLength, double angle = 0)
 	std::cout << dst << std::endl;
 }
 
-int main()
+void testRectangle()
 {
-	try 
+	try
 	{
-		Point a = Point(1, 1);
+		Point a = Point(0, 0);
+		Point b = Point(4, 4);
 		auto start = high_resolution_clock::now();
-		createRectangle(a, 5,15);
-		createRectangle(a, 5,30);
-		createRectangle(a, 5,45);
-		createRectangle(a, 5,60);
+		createRectangle(a, 10);
+		createRectangle(b, 10);
 		auto stop = high_resolution_clock::now();
 		auto duration = duration_cast<microseconds>(stop - start);
 		cout << duration.count() << endl;
 	}
-	catch (const char* ex )
+	catch (const char* ex)
 	{
 		std::cout << ex;
 	}
+}
+
+void testRectangle2()
+{
+	try
+	{
+		auto start = high_resolution_clock::now();
+		Point b = Point(4, 4);
+		auto stop = high_resolution_clock::now();
+		auto duration = duration_cast<microseconds>(stop - start);
+		cout << "testRectangle2: " << duration.count() << endl;
+	}
+	catch (const char* ex)
+	{
+		std::cout << ex;
+	}
+}
+
+void testRectangle3()
+{
+	try
+	{
+		auto start = high_resolution_clock::now();
+		Point* b = new Point(4, 4);
+		auto stop = high_resolution_clock::now();
+		auto duration = duration_cast<microseconds>(stop - start);
+		cout << "testRectangle3: " << duration.count() << endl;
+	}
+	catch (const char* ex)
+	{
+		std::cout << ex;
+	}
+}
+
+void testRectangle4()
+{
+	try
+	{
+		auto start = high_resolution_clock::now();
+		Point a = Point(4, 4);
+		Point* b = new Point(4, 4);
+		auto stop = high_resolution_clock::now();
+		auto duration = duration_cast<microseconds>(stop - start);
+		cout << "testRectangle4: " << duration.count() << endl;
+	}
+	catch (const char* ex)
+	{
+		std::cout << ex;
+	}
+}
+
+int main()
+{
+	testRectangle2();
+	testRectangle2();
+	testRectangle3();
+	testRectangle4();
 	return 0;
 }

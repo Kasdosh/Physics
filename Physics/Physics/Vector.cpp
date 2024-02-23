@@ -1,8 +1,11 @@
+/*
 #include "Vector.h"
+
+template class Vector<int>;
 
 template <typename T>
 Vector<T>::Vector()
-	:Vector<T>({0}, true)
+	:Vector({})
 {
 
 }
@@ -13,11 +16,16 @@ Vector<T>::Vector(const Vector<T>& other)
 	this->setCapacity(other.size());
 	this->setCurrentSize(0);
 	this->elements = new T[this->getCapacity() == 1 ? 2 : this->getCapacity()];
+
+	for (size_t i = 0; i < other.getCurrentSize(); i++)
+	{
+		this->push_back(other.at(i));
+	}
 }
 
 template <typename T>
 Vector<T>::Vector(T initialValue)
-	:Vector<T>({initialValue})
+	:Vector<T>({ initialValue })
 {
 }
 
@@ -27,7 +35,7 @@ Vector<T>::Vector(std::initializer_list<T> initialValue, const bool empty)
 	size_t sizeWithDistance = std::distance(initialValue.begin(), initialValue.end());
 	this->setCapacity(sizeWithDistance);
 	this->setCurrentSize(0);
-	this->elements = new T[this->getCapacity() == 1? 2 : this->getCapacity()];
+	this->elements = new T[this->getCapacity() == 1 ? 2 : this->getCapacity()];
 
 	if (!empty)
 	{
@@ -56,11 +64,11 @@ void Vector<T>::push_back(const T& value)
 template<typename T>
 const T& Vector<T>::at(size_t index) const
 {
-	if (index < this->getCurrentSize()) 
+	if (index < this->getCurrentSize())
 	{
 		return elements[index];
 	}
-	else 
+	else
 	{
 		throw "Index out of bounds";
 	}
@@ -94,6 +102,21 @@ void Vector<T>::removeAt(size_t index)
 	else {
 		throw "Index out of bounds";
 	}
+}
+
+template<typename T>
+inline std::string Vector<T>::toString() const
+{
+	std::string s;
+	s += "[";
+	for (size_t i = 0; i < currentSize; ++i) {
+		s += std::to_string(elements[i]);
+		if (i < currentSize - 1) {
+			s += ", ";
+		}
+	}
+	s += "]";
+	return s;
 }
 
 template<typename T>
@@ -151,4 +174,4 @@ template<typename T>
 void Vector<T>::setCurrentSize(size_t currentSize)
 {
 	this->currentSize = currentSize;
-}
+}*/

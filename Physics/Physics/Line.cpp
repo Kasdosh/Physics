@@ -109,7 +109,7 @@ const bool Line::isIntersacting(const Point& p) const
 	double y = 0;
 	if (this->getIsVertical())
 	{
-		return p.getX() - this->getB();
+		return p.getX() - this->getB() ? false : true;
 	}
 
 	y = p.getX() * this->getM() + this->getB();
